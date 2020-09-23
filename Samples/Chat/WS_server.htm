@@ -1,0 +1,54 @@
+<html>
+<head>
+</head>
+<object classid="clsid:B277FEC2-203A-473F-B98B-17181ED5F4A9"  codeBase="WinsckW.ocx" id="objWS" events="True" width="57" height="59">
+<param name="_ExtentX" value="1508">
+<param name="_ExtentY" value="1561">
+</object>
+
+
+<body>
+
+<script language="VBScript">
+Dim strData
+
+Sub start()
+	objWS.CloseCon
+	objWS.Protocol = 0
+	objWS.LocalPort = 189
+	objWS.Listen
+	Listen
+End Sub
+
+Sub Listen()
+	If objWS.State = 2 then
+		iTimer = setTimeout("Listen()",100)
+	Else
+		clearTimeout(iTimer)
+	End If
+End Sub
+
+Sub Connected()
+ 	T1.Value = T1.Value & vbcr & "Received: " & strData
+End Sub
+
+Sub objWS_ConnectionRequest(requestID)
+   If objWS.State <> 0 then
+      objWS.CloseCon
+      objWS.Accept requestID
+   End If
+End Sub
+
+Sub objWS_DataArrival(bytesTotal)
+      strData = objWS.GetData (bytesTotal)
+	   Connected
+End Sub
+
+</script>
+
+<p><input type="button" value="Listen >>" name="B1" onclick="start(): T1.Value = 'Listening at port 189...'"> <input type="button" value="Close Connection" name="B1" onclick="objWS.CloseCon"></p>
+<p><textarea rows="7" cols="51" name="T1"></textarea></p>
+<p>&nbsp;<input type="text" size="59" name="T2"></p>
+<p><input type="button" value="Send" onclick="objWS.SendData T2.Value: T1.Value = T1.Value & vbcr & 'Send: ' & T2.Value: T2.Value =''"></p>
+</body>
+</html>
