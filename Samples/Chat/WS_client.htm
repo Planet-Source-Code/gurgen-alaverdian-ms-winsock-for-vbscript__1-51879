@@ -1,0 +1,72 @@
+<html>
+<head>
+</head>
+<object classid="clsid:B277FEC2-203A-473F-B98B-17181ED5F4A9"  codeBase="WinsckW.ocx" id="objWS" events="True" width="57" height="59">
+<param name="_ExtentX" value="1508">
+<param name="_ExtentY" value="1561">
+</object>
+<body>
+
+<script language="VBScript">
+
+Dim Timeout, server, strData
+
+server = "localhost"
+
+Sub Connect()
+	objWS.Protocol = 0
+	objWS.Connect server, 189
+	T1.Value = "Connecting to: " & UCase(server)
+	FirstStep
+End Sub
+
+Function iCount()
+	Timeout = Timeout + 1
+	If Timeout > 30 then
+		clearTimeout(iTimer)
+		iCount = True
+	Else 
+		iCount = False
+	End If	
+End Function
+
+Sub FirstStep()
+	If iCount() then 
+		T1.Value = T1.Value & vbcr & "Connection to " & UCase(server) & " Failed.. Closing." 
+		objWS.CloseCon
+  		clearTimeout(iTimer)
+  		Timeout = 0
+		Exit Sub
+	End If
+	If objWS.State = 7 Then
+		T1.Value = T1.Value & vbcr & "Connection to " & UCase(server) & " established.."
+		str = "Hello There...."
+		T1.Value = T1.Value & vbcr & "Send: " & str
+		objWS.SendData null & str
+  		clearTimeout(iTimer)
+  		Timeout = 0
+	Else
+		iTimer = setTimeout("FirstStep()",20)     
+	End If
+End Sub
+
+Sub receive()
+	T1.Value = T1.Value & vbcr & "Received: " & strData
+	strData = ""
+End Sub
+
+
+Sub objWS_DataArrival(bytesTotal)
+      strData = objWS.GetData (bytesTotal)
+	   receive
+End Sub
+
+</script>
+
+<p><input type="button" value="Connect >>" name="B1" onclick="Connect()"> 
+<input type="button" value="Close Connection" name="B1" onclick="objWS.CloseCon: T1.Value = T1.Value & vbcr & 'Connection Closed'"></p>
+<p><textarea rows="7" cols="51" name="T1"></textarea></p>
+<p><input type="text" size="60" name="T2"></p>
+<p><input type="button" value="Send" name="B1" onclick="objWS.SendData T2.Value: T1.Value = T1.Value & vbcr & 'Send: ' & T2.Value: T2.Value =''"></p>
+</body>
+</html>

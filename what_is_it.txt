@@ -1,0 +1,65 @@
+This program is distributed with the hope that it will be useful
+but without any warranty. You may modify and/or redistribute it.
+
+Author: Gurgen Alaverdian (GA Soft)
+Email: gurgen@verizon.net
+WebSite: http://www.gurgensvbstuff.com
+
+
+Winsock for VBScript is a component (wrapper) which helps to overcome Mswinsck.ocx licensing issue. 
+Generally this Microsoft control cannot be used in VBScript unless you have a Visual Studio or 
+other appropriate design application installed on your PC or have this control licensed. 
+Once you download and register WinsckW.ocx you may freely use all methods and properties of 
+Mswinsck.ocx within your VBScript or HTML.
+
+Note: Both Mswinsck.ocx and WinsckW.ocx must be registered on your PC.
+
+==============================================================================
+All Methods, Properties, Constants and Events in WinsckW.ocx are identical those standard Mswinsck.ocx 
+have available except binding object and closing connection.
+
+	Create Object:
+
+		Set objWS = CreateObject("WinsckW.WinSock")
+
+	To capture events in VBscript:
+	
+		Set objWS = WScript.CreateObject("WinsckW.WinSock", "objWS_")
+
+	In IE implementation of VBscript within HTML:
+	
+		<object classid="clsid:B277FEC2-203A-473F-B98B-17181ED5F4A9"  codeBase="WinsckW.ocx" 
+		id="objWS" events="True" width="57" height="59">
+		</object>
+
+	Close Connection:
+
+		objWS.CloseCon
+
+In addition to standard wrapped properties, WinsckW.ocx includes base64 encode/decode module 
+for Basic SMTP authentication
+
+To encode use:
+
+	stringEncoded = objWS.encode("string_to_encode")
+
+To decode use:
+
+	stringDecoded = objWS.decode("string_to_decode")
+==============================================================================
+
+Included few samples for sending Emails, simple client\server communicator and
+Peer-to-Peer simple HTML chat (IE Browser Only).
+
+All samples are only intended to display the way to use winsock in VBscript.
+
+
+Chat is configured to run both "WS_client.htm" and "WS_server.htm" on local machine. 
+To run it on 2 different machines, replace "localhost" with the name of the machine 
+you run "WS_client.htm" from.
+
+
+To start chat: Run both pages, Click " Listen" on server, then "Connect" on the client.
+
+
+
